@@ -1,0 +1,15 @@
+/workspaces/JeuDuPendu/JeuDuPendu/bin/Debug/net8.0/JeuDuPendu
+/workspaces/JeuDuPendu/JeuDuPendu/bin/Debug/net8.0/JeuDuPendu.deps.json
+/workspaces/JeuDuPendu/JeuDuPendu/bin/Debug/net8.0/JeuDuPendu.runtimeconfig.json
+/workspaces/JeuDuPendu/JeuDuPendu/bin/Debug/net8.0/JeuDuPendu.dll
+/workspaces/JeuDuPendu/JeuDuPendu/bin/Debug/net8.0/JeuDuPendu.pdb
+/workspaces/JeuDuPendu/JeuDuPendu/obj/Debug/net8.0/JeuDuPendu.GeneratedMSBuildEditorConfig.editorconfig
+/workspaces/JeuDuPendu/JeuDuPendu/obj/Debug/net8.0/JeuDuPendu.AssemblyInfoInputs.cache
+/workspaces/JeuDuPendu/JeuDuPendu/obj/Debug/net8.0/JeuDuPendu.AssemblyInfo.cs
+/workspaces/JeuDuPendu/JeuDuPendu/obj/Debug/net8.0/JeuDuPendu.csproj.CoreCompileInputs.cache
+/workspaces/JeuDuPendu/JeuDuPendu/obj/Debug/net8.0/JeuDuPendu.sourcelink.json
+/workspaces/JeuDuPendu/JeuDuPendu/obj/Debug/net8.0/JeuDuPendu.dll
+/workspaces/JeuDuPendu/JeuDuPendu/obj/Debug/net8.0/refint/JeuDuPendu.dll
+/workspaces/JeuDuPendu/JeuDuPendu/obj/Debug/net8.0/JeuDuPendu.pdb
+/workspaces/JeuDuPendu/JeuDuPendu/obj/Debug/net8.0/JeuDuPendu.genruntimeconfig.cache
+/workspaces/JeuDuPendu/JeuDuPendu/obj/Debug/net8.0/ref/JeuDuPendu.dll
