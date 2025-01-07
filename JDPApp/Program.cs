@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AsciiArt;
 
 namespace JeuDuPendu
 {
@@ -14,6 +15,8 @@ namespace JeuDuPendu
         static void DevinerMot(string mot)
         {
             List<char> lettres = new List<char> {};
+            List<char> mauvaisesLettres = new List<char> {};
+            Console.WriteLine(Ascii.PENDU[0]);
             AfficherMot(mot, lettres);
             Console.WriteLine();
      
@@ -38,18 +41,26 @@ namespace JeuDuPendu
                 }
                 else
                 {
-                    Console.WriteLine($"Le mot ne contient pas la lettre {lettre}...");  
+                    Console.WriteLine($"Le mot ne contient pas la lettre {lettre}...");
+                    if (!mauvaisesLettres.Contains(lettre))
+                    {
+                        mauvaisesLettres.Add(lettre);
+                    }
                     viesRestantes--;
                     Console.WriteLine($"Vies restantes : {viesRestantes}\n");
                 }
                 
                 if(viesRestantes==0) 
                 {
+                    Console.WriteLine(Ascii.PENDU[NB_Vies-viesRestantes]);
                     Console.WriteLine($"Vous avez perdu! Le mot était {mot}!\n\n");
                     break;
                 }
 
+                Console.WriteLine(Ascii.PENDU[NB_Vies-viesRestantes]);
                 AfficherMot(mot, lettres);
+                Console.WriteLine();
+                Console.WriteLine($"Essais : {String.Join(", ", mauvaisesLettres)}");
                 Console.WriteLine();
             }               
         }

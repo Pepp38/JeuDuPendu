@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("JeuDuPendu")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ca0f4760d97b134ddca64cadb9fc51d408b553b0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+52e51349a5af6055d5ae17facd2f6d2dd784b957")]
 [assembly: System.Reflection.AssemblyProductAttribute("JeuDuPendu")]
 [assembly: System.Reflection.AssemblyTitleAttribute("JeuDuPendu")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
