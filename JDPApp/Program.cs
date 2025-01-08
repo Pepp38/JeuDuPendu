@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using AsciiArt;
 
 namespace JeuDuPendu
@@ -8,61 +9,130 @@ namespace JeuDuPendu
     {
         static void Main(string[] args)
         {
-            string mot = "Jouet";
-            DevinerMot(mot.ToUpper());
+            char reponse;
+
+            do
+            {
+                string mot = ChargerMot().Trim();
+
+                if (!string.IsNullOrEmpty(mot))
+                {
+                    DevinerMot(mot.ToUpper());
+                }
+                else
+                {
+                    Console.WriteLine("Aucun mot disponible. Le jeu ne peut pas continuer.");
+                    break;
+                }
+
+                Console.WriteLine("Voulez-vous continuer ? (O/N)");
+                reponse = LireReponseUtilisateur();
+
+            } while (reponse == 'O');
+
+            Console.WriteLine("Merci d'avoir joué ! À bientôt !");
+        }
+
+        static string ChargerMot()
+        {
+            string[] liste = ChargerListe();
+
+            if (liste.Length == 0)
+            {
+                Console.WriteLine("La liste des mots est vide !");
+                return string.Empty; // Retourne une chaîne vide si la liste est vide
+            }
+
+            Random random = new Random();
+            int index = random.Next(liste.Length); // Sélectionne un mot au hasard
+            return liste[index];
+        }
+
+        static string[] ChargerListe()
+        {
+            string cheminFichier = "mots.txt";
+
+            if (File.Exists(cheminFichier))
+            {
+                // Lis toutes les lignes du fichier et retourne un tableau de mots
+                return File.ReadAllLines(cheminFichier);
+            }
+            else
+            {
+                Console.WriteLine("Fichier introuvable. Vérifiez le chemin !");
+                return Array.Empty<string>(); // Retourne un tableau vide
+            }
         }
 
         static void DevinerMot(string mot)
         {
-            List<char> lettres = new List<char> {};
-            List<char> mauvaisesLettres = new List<char> {};
+            List<char> lettres = new List<char>();
+            List<char> mauvaisesLettres = new List<char>();
             Console.WriteLine(Ascii.PENDU[0]);
             AfficherMot(mot, lettres);
             Console.WriteLine();
-     
-            const int NB_Vies = 6;
-            int viesRestantes = NB_Vies;
 
-            while(true)
-            {         
-                char lettre = DemanderLettre(); 
+            const int NB_VIES = 6;
+            int viesRestantes = NB_VIES;
 
-                if(mot.Contains(lettre))
+            while (true)
+            {
+                char lettre = DemanderLettre();
+
+                if (mot.Contains(lettre))
                 {
                     Console.WriteLine($"Le mot contient la lettre {lettre}!\n");
-                    lettres.Add(lettre);
-                    bool asWon = MotDeviner(mot,lettres);
 
-                    if(asWon)
+                    if (!lettres.Contains(lettre))
                     {
-                        Console.WriteLine($"Le mot est {mot}, vous avez gagné!\n\n");
+                        lettres.Add(lettre);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Vous avez déjà deviné la lettre {lettre}.");
+                    }
+
+                    if (MotDeviner(mot, lettres))
+                    {
+                        Console.WriteLine($"Le mot est {mot}, vous avez gagné !");
                         break;
                     }
                 }
                 else
                 {
                     Console.WriteLine($"Le mot ne contient pas la lettre {lettre}...");
+
                     if (!mauvaisesLettres.Contains(lettre))
                     {
                         mauvaisesLettres.Add(lettre);
+                        viesRestantes--;
                     }
-                    viesRestantes--;
+                    else
+                    {
+                        Console.WriteLine($"Vous avez déjà essayé la lettre {lettre}.");
+                    }
+
                     Console.WriteLine($"Vies restantes : {viesRestantes}\n");
                 }
-                
-                if(viesRestantes==0) 
+
+                if (viesRestantes == 0)
                 {
-                    Console.WriteLine(Ascii.PENDU[NB_Vies-viesRestantes]);
-                    Console.WriteLine($"Vous avez perdu! Le mot était {mot}!\n\n");
+                    Console.WriteLine(Ascii.PENDU[NB_VIES - viesRestantes]);
+                    Console.WriteLine($"Vous avez perdu ! Le mot était {mot}.\n");
                     break;
                 }
 
-                Console.WriteLine(Ascii.PENDU[NB_Vies-viesRestantes]);
-                AfficherMot(mot, lettres);
-                Console.WriteLine();
-                Console.WriteLine($"Essais : {String.Join(", ", mauvaisesLettres)}");
-                Console.WriteLine();
-            }               
+                AfficherEtat(viesRestantes, NB_VIES, mauvaisesLettres, mot, lettres);
+            }
+        }
+
+        static void AfficherEtat(int viesRestantes, int NB_VIES, List<char> mauvaisesLettres, string mot, List<char> lettres)
+        {
+            Console.WriteLine(Ascii.PENDU[NB_VIES - viesRestantes]);
+            AfficherMot(mot, lettres);
+            Console.WriteLine();
+            Console.WriteLine($"Essais : {string.Join(", ", mauvaisesLettres)}");
+            Console.WriteLine();
         }
 
         static char DemanderLettre()
@@ -72,10 +142,16 @@ namespace JeuDuPendu
 
             do
             {
-                Console.Write("Entrez une lettre : ");
+                Console.Write("Entrez une lettre (ou tapez 'quit' pour quitter) : ");
                 reponse = Console.ReadLine();
                 Console.Clear();
-                
+
+                if (reponse.ToLower() == "quit")
+                {
+                    Console.WriteLine("Vous avez quitté le jeu.");
+                    Environment.Exit(0);
+                }
+
                 if (string.IsNullOrEmpty(reponse) || reponse.Length != 1)
                 {
                     Console.WriteLine("Veuillez entrer une lettre.");
@@ -86,38 +162,31 @@ namespace JeuDuPendu
                 }
                 else
                 {
-                    // Si l'entrée est valide, on retourne la lettre
                     lettre = char.ToUpper(reponse[0]);
                     return lettre;
                 }
-            } while (true); 
+            } while (true);
         }
 
         static bool MotDeviner(string mot, List<char> lettres)
         {
-            // Parcourt chaque lettre du mot
-            for (int i = 0; i < mot.Length; i++)
+            foreach (char c in mot)
             {
-                // Vérifie si la lettre actuelle du mot est dans la liste des lettres trouvées
-                if (!lettres.Contains(mot[i]))
+                if (!lettres.Contains(c))
                 {
-                    // Si une lettre n'est pas trouvée, le mot n'est pas encore deviné
                     return false;
                 }
             }
-
-            // Si toutes les lettres du mot sont trouvées dans la liste, le mot est deviné
             return true;
         }
 
-
         static void AfficherMot(string mot, List<char> lettres)
         {
-            for (int i = 0; i < mot.Length; i++)
+            foreach (char c in mot)
             {
-                if (lettres.Contains(char.ToUpper(mot[i])))
+                if (lettres.Contains(char.ToUpper(c)))
                 {
-                    Console.Write(mot[i] + " ");
+                    Console.Write(c + " ");
                 }
                 else
                 {
@@ -125,6 +194,25 @@ namespace JeuDuPendu
                 }
             }
             Console.WriteLine();
+        }
+
+        static char LireReponseUtilisateur()
+        {
+            string reponse;
+
+            do
+            {
+                reponse = Console.ReadLine()?.Trim().ToUpper();
+
+                if (string.IsNullOrEmpty(reponse) || (reponse != "O" && reponse != "N"))
+                {
+                    Console.WriteLine("Veuillez répondre par 'O' (oui) ou 'N' (non).");
+                }
+                else
+                {
+                    return reponse[0];
+                }
+            } while (true);
         }
     }
 }
