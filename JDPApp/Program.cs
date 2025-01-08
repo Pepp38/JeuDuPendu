@@ -13,6 +13,7 @@ namespace JeuDuPendu
 
             do
             {
+                Console.Clear();
                 string mot = ChargerMot().Trim();
 
                 if (!string.IsNullOrEmpty(mot))
@@ -30,7 +31,7 @@ namespace JeuDuPendu
 
             } while (reponse == 'O');
 
-            Console.WriteLine("Merci d'avoir joué ! À bientôt !");
+            Console.WriteLine("\nMerci d'avoir joué ! À bientôt !");
         }
 
         static string ChargerMot()
@@ -49,20 +50,37 @@ namespace JeuDuPendu
         }
 
         static string[] ChargerListe()
-        {
-            string cheminFichier = "mots.txt";
+{
+    string cheminFichier = "mots.txt";
 
-            if (File.Exists(cheminFichier))
-            {
-                // Lis toutes les lignes du fichier et retourne un tableau de mots
-                return File.ReadAllLines(cheminFichier);
-            }
-            else
-            {
-                Console.WriteLine("Fichier introuvable. Vérifiez le chemin !");
-                return Array.Empty<string>(); // Retourne un tableau vide
-            }
+    try
+    {
+        if (File.Exists(cheminFichier))
+        {
+            return File.ReadAllLines(cheminFichier);
         }
+        else
+        {
+            Console.WriteLine("Fichier introuvable. Vérifiez le chemin !");
+            return Array.Empty<string>();
+        }
+        }
+        catch (UnauthorizedAccessException)
+        {
+            Console.WriteLine("Accès non autorisé au fichier. Vérifiez vos permissions.");
+        }
+        catch (IOException ex)
+        {
+            Console.WriteLine($"Une erreur s'est produite lors de l'accès au fichier : {ex.Message}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erreur inattendue : {ex.Message}");
+        }
+
+        return Array.Empty<string>(); 
+}
+
 
         static void DevinerMot(string mot)
         {
