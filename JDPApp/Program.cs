@@ -26,12 +26,12 @@ namespace JeuDuPendu
                     break;
                 }
 
-                Console.WriteLine("Voulez-vous continuer ? (O/N)");
+                Console.Write("Voulez-vous continuer ? (O/N) : ");
                 reponse = LireReponseUtilisateur();
 
             } while (reponse == 'O');
 
-            Console.WriteLine("\nMerci d'avoir joué ! À bientôt !");
+            Console.WriteLine("\nMerci d'avoir joué ! À bientôt !\n");
         }
 
         static string ChargerMot()
@@ -111,10 +111,22 @@ namespace JeuDuPendu
                     }
 
                     if (MotDeviner(mot, lettres))
+                {
+                    int ms = 0;
+
+                    Console.Clear();
+                    for (int i = 0; i < 8; i++)
                     {
-                        Console.WriteLine($"Le mot est {mot}, vous avez gagné !");
-                        break;
+                        ms = ms + (5*i);
+                        Console.WriteLine($"🎉 Vous avez gagné ! Le mot était : {mot} 🎉");
+                        Thread.Sleep(ms);
+                        Console.Clear();
+                        Thread.Sleep(ms);
                     }
+                    Console.WriteLine($"🎉 Le mot est {mot}, félicitations ! 🎉");
+                    break;
+                }
+
                 }
                 else
                 {
@@ -135,8 +147,19 @@ namespace JeuDuPendu
 
                 if (viesRestantes == 0)
                 {
-                    Console.WriteLine(Ascii.PENDU[NB_VIES - viesRestantes]);
-                    Console.WriteLine($"Vous avez perdu ! Le mot était {mot}.\n");
+                    int ms = 0;
+
+                    Console.Clear();
+                    for (int i = 0; i < 10; i++)
+                    {
+                        ms = ms + (5*i);
+
+                        Console.WriteLine($"💀 Vous avez perdu ! Le mot était : {mot} 💀");
+                        Thread.Sleep(ms);
+                        Console.Clear();
+                        Thread.Sleep(ms);
+                    }
+                    Console.WriteLine($"💀 Le mot était {mot}. Essayez encore ! 💀");
                     break;
                 }
 
