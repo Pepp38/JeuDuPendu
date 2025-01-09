@@ -41,11 +41,11 @@ namespace JeuDuPendu
             if (liste.Length == 0)
             {
                 Console.WriteLine("La liste des mots est vide !");
-                return string.Empty; // Retourne une chaîne vide si la liste est vide
+                return string.Empty; 
             }
 
             Random random = new Random();
-            int index = random.Next(liste.Length); // Sélectionne un mot au hasard
+            int index = random.Next(liste.Length); 
             return liste[index];
         }
 
